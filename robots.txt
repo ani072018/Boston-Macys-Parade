@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ani072018.github.io/Boston-Macys-Parade/sitemap.xml
