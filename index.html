@@ -305,13 +305,17 @@
     padding:1.6rem 1.4rem;
     position:relative;
     transition:background 0.35s ease, transform 0.35s ease;
-    cursor:default;
+    cursor:pointer;
   }
   .balloon-card:hover{
     background:#fffdf8;
     transform:translateY(-4px);
     z-index:2;
     box-shadow:0 14px 30px rgba(28,23,16,0.12);
+  }
+  .balloon-card:focus-visible{
+    outline:2px solid var(--cranberry);
+    outline-offset:-2px;
   }
   .balloon-card .glyph{
     font-size:2.1rem;
@@ -337,6 +341,107 @@
     line-height:1.55;
     color:#5a5040;
   }
+  .balloon-card .read-more{
+    display:inline-block;
+    margin-top:0.7rem;
+    font-size:0.74rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--cranberry);
+    font-weight:600;
+  }
+  .balloon-card .read-more::after{
+    content:' →';
+  }
+
+  /* ---------- MODAL ---------- */
+  .modal-overlay{
+    position:fixed; inset:0;
+    background:rgba(11,19,48,0.72);
+    backdrop-filter:blur(3px);
+    display:flex; align-items:center; justify-content:center;
+    padding:6vw;
+    z-index:100;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.3s ease;
+  }
+  .modal-overlay.open{
+    opacity:1;
+    pointer-events:auto;
+  }
+  .modal-card{
+    background:var(--parchment);
+    max-width:460px;
+    width:100%;
+    padding:2.8rem 2.4rem;
+    position:relative;
+    border-top:4px solid var(--cranberry);
+    box-shadow:0 30px 70px rgba(0,0,0,0.4);
+    transform:translateY(24px) scale(0.96);
+    transition:transform 0.35s cubic-bezier(.2,.9,.3,1.3);
+    max-height:80vh;
+    overflow-y:auto;
+  }
+  .modal-overlay.open .modal-card{
+    transform:translateY(0) scale(1);
+  }
+  .modal-close{
+    position:absolute;
+    top:1rem; right:1.2rem;
+    background:none;
+    border:none;
+    font-size:1.5rem;
+    line-height:1;
+    color:#8a7d64;
+    cursor:pointer;
+    font-family:'Space Grotesk',sans-serif;
+    padding:0.3rem;
+  }
+  .modal-close:hover{color:var(--cranberry);}
+  .modal-glyph{
+    font-size:3.2rem;
+    display:block;
+    margin-bottom:1rem;
+  }
+  .modal-num{
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--cranberry);
+    margin-bottom:0.8rem;
+    display:block;
+  }
+  .modal-card h4{
+    font-family:'Fraunces',serif;
+    font-size:1.6rem;
+    margin-bottom:1.1rem;
+  }
+  .modal-card p{
+    font-size:0.99rem;
+    line-height:1.75;
+    color:#3a3226;
+  }
+  .modal-nav{
+    display:flex;
+    justify-content:space-between;
+    margin-top:1.8rem;
+    padding-top:1.4rem;
+    border-top:1px solid var(--line);
+  }
+  .modal-nav button{
+    background:none;
+    border:none;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:0.8rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--spruce);
+    cursor:pointer;
+    padding:0.4rem 0.2rem;
+  }
+  .modal-nav button:hover{color:var(--cranberry);}
+  .modal-nav button:disabled{opacity:0.3; cursor:default;}
 
   /* ---------- FINALE ---------- */
   .finale{
@@ -388,6 +493,7 @@
     .hero-balloons{font-size:1.6rem;}
     .hero-meta{gap:1.4rem;}
     .roster-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));}
+    .modal-card{padding:2.2rem 1.6rem; max-height:85vh;}
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -476,28 +582,104 @@
     <span class="tag">balloon roster</span>
     <h2>Who floated by, curbside</h2>
   </div>
-  <p class="lede reveal">The parade unfolded like a living storybook, balloon by balloon. Here's the lineup, in order of appearance.</p>
+  <p class="lede reveal">The parade unfolded like a living storybook, balloon by balloon. Here's the lineup, in order of appearance — tap any card for the full story.</p>
 
-  <div class="roster-grid">
-    <div class="balloon-card reveal"><span class="bnum">01</span><span class="glyph">🐶</span><h4>Bluey</h4><p>Playful and bright — kids screamed her name before she'd even fully cleared the buildings.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">02</span><span class="glyph">🐕</span><h4>Snoopy</h4><p>Calm, iconic, and met with the warmest cheers of the morning — pure nostalgia on a leash.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">03</span><span class="glyph">⚡</span><h4>Pikachu</h4><p>A jolt of pure energy. Phones shot skyward, kids bounced on tiptoes.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">04</span><span class="glyph">🕸️</span><h4>Spider-Man</h4><p>Swung into view in spirit — the street briefly turned into a superhero stage.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">05</span><span class="glyph">🟡</span><h4>The Minions</h4><p>Instant chaos, in the best way. Goofy expressions, mischief, laughter for blocks.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">06</span><span class="glyph">🐱</span><h4>Hello Kitty</h4><p>Soft charm, gentle applause — a quiet pause inside the whirlwind.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">07</span><span class="glyph">🎤</span><h4>K-Pop Demon</h4><p>Bold, striking, and modern — cameras clicked nonstop as it drifted past.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">08</span><span class="glyph">🐼</span><h4>Po</h4><p>Kung Fu Panda's Po, playful and confident — kids threw kung-fu moves right back at him.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">09</span><span class="glyph">🤡</span><h4>Ronald McDonald</h4><p>A long-running parade legacy, greeted with recognition and easy nostalgia.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">10</span><span class="glyph">🦈</span><h4>Baby Shark</h4><p>Turned the whole block into a joyous, chaotic singalong.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">11</span><span class="glyph">🐭</span><h4>Mickey Mouse</h4><p>Graceful overhead — as if Disney magic itself had landed in Manhattan.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">12</span><span class="glyph">🟢</span><h4>Shrek</h4><p>Laughter and playful roars. Someone, somewhere, always shouts "Donkey!"</p></div>
-    <div class="balloon-card reveal"><span class="bnum">13</span><span class="glyph">😼</span><h4>Garfield</h4><p>Lazy, lovable, and the subject of at least a dozen appetite jokes per minute.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">14</span><span class="glyph">✈️</span><h4>Snoopy, Red Baron</h4><p>A clever twist on the classic — long-time fans lit up at the nod to parade history.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">15</span><span class="glyph">🍯</span><h4>Winnie the Pooh</h4><p>Gentle and warm — the kind of float that makes parents hug their kids a little tighter.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">16</span><span class="glyph">🍍</span><h4>SpongeBob</h4><p>Goofy and energetic — the crowd mimicked his expressions without even meaning to.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">17</span><span class="glyph">✨</span><h4>Shimmer and Shine</h4><p>Dazzling color — the littlest spectators waved at the genie sisters like old friends.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">18</span><span class="glyph">🐾</span><h4>Paw Patrol</h4><p>Ryder and the pups rolled in to the loudest cheers from the youngest row of the crowd.</p></div>
-    <div class="balloon-card reveal"><span class="bnum">19</span><span class="glyph">🗺️</span><h4>Dora the Explorer</h4><p>A spontaneous, joyful chorus of familiar phrases followed her down the route.</p></div>
+  <div class="roster-grid" id="rosterGrid">
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🐶" data-num="01" data-title="Bluey"
+         data-full="Bluey floated in as the very first giant of the morning, and the curb basically erupted before she'd even cleared the rooftops. There's something about a six-year-old blue heeler that turns a half-asleep crowd fully awake in under ten seconds — kids were on shoulders, phones were up, and the day officially began.">
+      <span class="bnum">01</span><span class="glyph">🐶</span><h4>Bluey</h4><p>Playful and bright — kids screamed her name before she'd even fully cleared the buildings.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🐕" data-num="02" data-title="Snoopy"
+         data-full="Calm, iconic, and met with the warmest cheers of the morning — pure nostalgia on a leash. Snoopy has flown in the parade in one form or another since the 1960s, and you could feel it: parents pointed him out to kids like they were passing down a family recipe.">
+      <span class="bnum">02</span><span class="glyph">🐕</span><h4>Snoopy</h4><p>Calm, iconic, and met with the warmest cheers of the morning — pure nostalgia on a leash.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="⚡" data-num="03" data-title="Pikachu"
+         data-full="A jolt of pure electric-yellow energy. Phones shot skyward, kids bounced on tiptoes, and for a solid two minutes the entire block sounded like a stadium crowd doing the wave — just with more squealing.">
+      <span class="bnum">03</span><span class="glyph">⚡</span><h4>Pikachu</h4><p>A jolt of pure energy. Phones shot skyward, kids bounced on tiptoes.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🕸️" data-num="04" data-title="Spider-Man"
+         data-full="Swung into view in spirit — the street briefly turned into a superhero stage. The balloon handlers dipped and turned him just enough to make it feel like he was actually web-slinging between the buildings, and the crowd played right along.">
+      <span class="bnum">04</span><span class="glyph">🕸️</span><h4>Spider-Man</h4><p>Swung into view in spirit — the street briefly turned into a superhero stage.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🟡" data-num="05" data-title="The Minions"
+         data-full="Instant chaos, in the best way. Goofy expressions, mischief, laughter for blocks — the Minions balloon doesn't so much float past as it does bounce, and the crowd's reaction bounced right along with it.">
+      <span class="bnum">05</span><span class="glyph">🟡</span><h4>The Minions</h4><p>Instant chaos, in the best way. Goofy expressions, mischief, laughter for blocks.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🐱" data-num="06" data-title="Hello Kitty"
+         data-full="Soft charm, gentle applause — a quiet pause inside the whirlwind. After the noise of the Minions, Hello Kitty drifted by almost serenely, and for a moment the whole street seemed to exhale.">
+      <span class="bnum">06</span><span class="glyph">🐱</span><h4>Hello Kitty</h4><p>Soft charm, gentle applause — a quiet pause inside the whirlwind.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🎤" data-num="07" data-title="K-Pop Demon"
+         data-full="Bold, striking, and modern — cameras clicked nonstop as it drifted past. One of the newer additions to the lineup, and easily one of the most photographed of the morning, judging by the sea of raised phones.">
+      <span class="bnum">07</span><span class="glyph">🎤</span><h4>K-Pop Demon</h4><p>Bold, striking, and modern — cameras clicked nonstop as it drifted past.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🐼" data-num="08" data-title="Po"
+         data-full="Kung Fu Panda's Po, playful and confident — kids threw kung-fu moves right back at him. There's a real joy in watching a six-year-old attempt a flying kick on a sidewalk in November while a forty-foot panda floats overhead.">
+      <span class="bnum">08</span><span class="glyph">🐼</span><h4>Po</h4><p>Kung Fu Panda's Po, playful and confident — kids threw kung-fu moves right back at him.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🤡" data-num="09" data-title="Ronald McDonald"
+         data-full="A long-running parade legacy, greeted with recognition and easy nostalgia. Not the flashiest balloon of the day, but one that pulled a knowing smile from just about every parent in earshot.">
+      <span class="bnum">09</span><span class="glyph">🤡</span><h4>Ronald McDonald</h4><p>A long-running parade legacy, greeted with recognition and easy nostalgia.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🦈" data-num="10" data-title="Baby Shark"
+         data-full="Turned the whole block into a joyous, chaotic singalong. It took roughly four seconds after he appeared for a hundred small children — and a fair number of adults — to start doing the hand motions unprompted.">
+      <span class="bnum">10</span><span class="glyph">🦈</span><h4>Baby Shark</h4><p>Turned the whole block into a joyous, chaotic singalong.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🐭" data-num="11" data-title="Mickey Mouse"
+         data-full="Graceful overhead — as if Disney magic itself had landed in Manhattan. Of all the balloons, this was the one that made even the adults in the crowd go quiet for a second, just watching him sail between the skyscrapers.">
+      <span class="bnum">11</span><span class="glyph">🐭</span><h4>Mickey Mouse</h4><p>Graceful overhead — as if Disney magic itself had landed in Manhattan.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🟢" data-num="12" data-title="Shrek"
+         data-full="Laughter and playful roars. Someone, somewhere, always shouts 'Donkey!' — and sure enough, right on cue, a chorus of small voices did exactly that as the big green ogre rolled by.">
+      <span class="bnum">12</span><span class="glyph">🟢</span><h4>Shrek</h4><p>Laughter and playful roars. Someone, somewhere, always shouts "Donkey!"</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="😼" data-num="13" data-title="Garfield"
+         data-full="Lazy, lovable, and the subject of at least a dozen appetite jokes per minute. Fittingly, on a morning built entirely around a giant Thanksgiving feast, the world's laziest, hungriest cat felt like the most relatable balloon on the route.">
+      <span class="bnum">13</span><span class="glyph">😼</span><h4>Garfield</h4><p>Lazy, lovable, and the subject of at least a dozen appetite jokes per minute.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="✈️" data-num="14" data-title="Snoopy, Red Baron"
+         data-full="A clever twist on the classic — long-time fans lit up at the nod to parade history. Snoopy's flying-ace alter ego, complete with goggles and scarf, doing his best imaginary dogfight above Central Park West.">
+      <span class="bnum">14</span><span class="glyph">✈️</span><h4>Snoopy, Red Baron</h4><p>A clever twist on the classic — long-time fans lit up at the nod to parade history.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🍯" data-num="15" data-title="Winnie the Pooh"
+         data-full="Gentle and warm — the kind of float that makes parents hug their kids a little tighter. There's a softness to Pooh that's hard to describe; the crowd noise dipped, but the smiles didn't.">
+      <span class="bnum">15</span><span class="glyph">🍯</span><h4>Winnie the Pooh</h4><p>Gentle and warm — the kind of float that makes parents hug their kids a little tighter.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🍍" data-num="16" data-title="SpongeBob"
+         data-full="Goofy and energetic — the crowd mimicked his expressions without even meaning to. By the time he passed, half the block was doing some version of SpongeBob's signature wide-eyed grin, kids and grown-ups alike.">
+      <span class="bnum">16</span><span class="glyph">🍍</span><h4>SpongeBob</h4><p>Goofy and energetic — the crowd mimicked his expressions without even meaning to.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="✨" data-num="17" data-title="Shimmer and Shine"
+         data-full="Dazzling color — the littlest spectators waved at the genie sisters like old friends. Between the two of them, they lit up more phone flashes than anything else on the route by that point in the morning.">
+      <span class="bnum">17</span><span class="glyph">✨</span><h4>Shimmer and Shine</h4><p>Dazzling color — the littlest spectators waved at the genie sisters like old friends.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🐾" data-num="18" data-title="Paw Patrol"
+         data-full="Ryder and the pups rolled in to the loudest cheers from the youngest row of the crowd. It's genuinely hard to overstate how many tiny fists went up in the air the second that fire-truck-red balloon came into view.">
+      <span class="bnum">18</span><span class="glyph">🐾</span><h4>Paw Patrol</h4><p>Ryder and the pups rolled in to the loudest cheers from the youngest row of the crowd.</p><span class="read-more">Read more</span>
+    </div>
+    <div class="balloon-card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+         data-glyph="🗺️" data-num="19" data-title="Dora the Explorer"
+         data-full="A spontaneous, joyful chorus of familiar phrases followed her down the route. Somewhere behind us, an entire family launched into an unprompted 'Backpack, backpack!' and honestly, it fit the morning perfectly.">
+      <span class="bnum">19</span><span class="glyph">🗺️</span><h4>Dora the Explorer</h4><p>A spontaneous, joyful chorus of familiar phrases followed her down the route.</p><span class="read-more">Read more</span>
+    </div>
   </div>
 </section>
 
@@ -521,6 +703,20 @@
   <span>Route 05 — Boston → New York City · Thanksgiving Weekend</span>
 </footer>
 
+<div class="modal-overlay" id="balloonModal">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <span class="modal-glyph" id="modalGlyph"></span>
+    <span class="modal-num" id="modalNum"></span>
+    <h4 id="modalTitle"></h4>
+    <p id="modalDesc"></p>
+    <div class="modal-nav">
+      <button id="modalPrev">← Previous</button>
+      <button id="modalNext">Next →</button>
+    </div>
+  </div>
+</div>
+
 <script>
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries)=>{
@@ -532,6 +728,65 @@
     });
   },{threshold:0.15});
   revealEls.forEach(el=>io.observe(el));
+
+  // ---------- Balloon modal ----------
+  const cards = Array.from(document.querySelectorAll('.balloon-card'));
+  const modal = document.getElementById('balloonModal');
+  const modalGlyph = document.getElementById('modalGlyph');
+  const modalNum = document.getElementById('modalNum');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalPrev = document.getElementById('modalPrev');
+  const modalNext = document.getElementById('modalNext');
+  const modalClose = document.getElementById('modalClose');
+
+  let currentIndex = -1;
+  let lastFocused = null;
+
+  function renderCard(idx){
+    const card = cards[idx];
+    modalGlyph.textContent = card.dataset.glyph;
+    modalNum.textContent = card.dataset.num;
+    modalTitle.textContent = card.dataset.title;
+    modalDesc.textContent = card.dataset.full;
+    modalPrev.disabled = idx === 0;
+    modalNext.disabled = idx === cards.length - 1;
+  }
+
+  function openModal(idx){
+    currentIndex = idx;
+    lastFocused = document.activeElement;
+    renderCard(idx);
+    modal.classList.add('open');
+    modalClose.focus();
+  }
+
+  function closeModal(){
+    modal.classList.remove('open');
+    if(lastFocused) lastFocused.focus();
+  }
+
+  cards.forEach((card, idx)=>{
+    card.addEventListener('click', ()=>openModal(idx));
+    card.addEventListener('keydown', e=>{
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        openModal(idx);
+      }
+    });
+  });
+
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', e=>{ if(e.target === modal) closeModal(); });
+  modalPrev.addEventListener('click', ()=>{ if(currentIndex > 0) renderCard(--currentIndex); });
+  modalNext.addEventListener('click', ()=>{ if(currentIndex < cards.length - 1) renderCard(++currentIndex); });
+
+  document.addEventListener('keydown', e=>{
+    if(!modal.classList.contains('open')) return;
+    if(e.key === 'Escape') closeModal();
+    if(e.key === 'ArrowLeft' && currentIndex > 0) renderCard(--currentIndex);
+    if(e.key === 'ArrowRight' && currentIndex < cards.length - 1) renderCard(++currentIndex);
+  });
 </script>
 
 </body>
